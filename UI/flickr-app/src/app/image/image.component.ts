@@ -20,7 +20,7 @@ export class ImageComponent implements OnInit {
 
   submitSearchTerm(search_input){
     this.url_array = [];
-    fetch('http://localhost:3002/fetchPics',
+    fetch('http://ec2-18-218-67-18.us-east-2.compute.amazonaws.com:3002/fetchPics',
     {	
       method:'POST',
       mode:'cors',
