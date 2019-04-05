@@ -1,0 +1,13 @@
+<div class= 'row justify-content-center' style="margin-bottom:1%">
+  <input id="dom_search_bar" type="text" placeholder="Enter search term" (keyup.enter)="submitSearchTerm(search_bar.value)" #search_bar/>
+  <button type="button"  class="btn btn-primary" style="margin-left:10px;"  (click)="submitSearchTerm(search_bar.value)">
+      Search
+  </button>
+</div>
+<div *ngIf="url_array" class= 'row justify-content-center'>
+  <img *ngFor="let url of url_array" style="width:250px;height:250px;margin:5px;" src={{url}}>
+</div>
+<div *ngIf="!url_array" class= 'row justify-content-center'>
+  No images.
+</div>
+

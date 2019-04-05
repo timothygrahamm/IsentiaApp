@@ -5,35 +5,30 @@ const cors = require('cors')
 const app = express();
 const parseString = require('xml2js').parseString;
 
-/*
-    fetch('http://localhost:3002/fetchPics',
-	{	
-		method:'POST',
-		mode:'cors',
-		headers: {
-			"Content-Type":"application/JSON"
-        },
-		body: JSON.stringify({search_term:"funny"})
-	}).then(function(response){
-	
-		console.log(response);
-    });
-*/
-
 let fetchPics = function(req,res){
     console.log(req.body);
     axios.get("https://api.flickr.com/services/feeds/photos_public.gne?tags="+req.body.search_term).then(response => {
         parseString(response.data, function(err,result){
-            let img_obj = result.feed.entry[0].link[1];
+            let img_obj;
             let img_url_array = [];
+            
+            console.log(response.data);
+            if(result.feed.entry==undefined){
+                throw Error(response.statusText);
+            }
+            //Each flickr post is stored in a <title> tag which make up the <entry> array
             result.feed.entry.forEach(element => {
+                //the link to the actual image file is the second <link> tag inside the <entry>
                 img_obj = element.link[1];
+                //The XML Parser added a dollar sign key into the img_obj, so access with this. 
                 img_url_array.push(img_obj['$'].href);
             });
             res.send(img_url_array);
         });        
     }).catch(error=>{
         console.log(error);
+        let error_obj = {"message":"something went wrong"};
+        res.send(error_obj);
     });    
 }
 
